@@ -11,18 +11,22 @@
       </div>
 
       <el-upload
-        action="BASE_API + '/admin/core/dict/import'"
+        :action="BASE_API + '/taxi/identify'"
+        ref="upload"
         list-type="picture-card"
+        :headers="myHeader"
         :auto-upload="false"
-        :on-preview="handlePictureCardPreview"
+        :on-preview="handlePreview"
         :on-remove="handleRemove"
-        accept=".jpg, .jpeg, .png, .pdf"
+        :on-exceed="handleExceed"
+        :on-success="handlerSuccess"
+        accept=".jpg, .jpeg, .png"
+        :limit="1"
       >
-        <i class="el-icon-plus"></i>
+        <!-- <i class="el-icon-plus"></i> -->
+        <img v-if="imageUrl" :src="imageUrl" class="taxi" />
+        <i v-else class="el-icon-plus taxi-uploader-icon"></i>
       </el-upload>
-      <el-dialog :visible.sync="dialogVisible">
-        <img width="100%" :src="dialogImageUrl" alt="" />
-      </el-dialog>
     </div>
     <div
       style="
@@ -38,103 +42,140 @@
           type="primary"
           size="mini"
           icon="el-icon-download"
-          @click="open1"
+          @click="identifyTaxiInfo"
         >
-          自动导入发票信息
+          识别发票信息
         </el-button>
       </div>
-      <el-form label-width="100px">
+      <el-form label-width="100px" ref="taxiFormRef" :model="taxiForm">
         <el-form-item label="发票代码">
-          <el-input v-model="input1" placeholder="请输入内容"></el-input>
+          <el-input
+            v-model="taxiForm.taxiDaima"
+            placeholder="请输入内容"
+          ></el-input>
         </el-form-item>
         <el-form-item label="发票号码">
-          <el-input v-model="input2" placeholder="请输入内容"></el-input>
+          <el-input
+            v-model="taxiForm.taxiHaoma"
+            placeholder="请输入内容"
+          ></el-input>
         </el-form-item>
         <el-form-item label="车牌号">
-          <el-input v-model="input3" placeholder="请输入内容"></el-input>
+          <el-input
+            v-model="taxiForm.carNo"
+            placeholder="请输入内容"
+          ></el-input>
         </el-form-item>
         <el-form-item label="乘车日期">
-          <el-input v-model="input4" placeholder="请输入内容"></el-input>
+          <el-input
+            v-model="taxiForm.taxiDate"
+            placeholder="请输入内容"
+          ></el-input>
         </el-form-item>
         <el-form-item label="乘车时间区间">
-          <el-input v-model="input5" placeholder="请输入内容"></el-input>
+          <el-input
+            v-model="taxiForm.taxiTime"
+            placeholder="请输入内容"
+          ></el-input>
         </el-form-item>
         <el-form-item label="乘车金额">
-          <el-input v-model="input6" placeholder="请输入内容"></el-input>
+          <el-input
+            v-model="taxiForm.amount"
+            placeholder="请输入内容"
+          ></el-input>
         </el-form-item>
         <el-form-item label="单价">
-          <el-input v-model="input7" placeholder="请输入内容"></el-input>
+          <el-input
+            v-model="taxiForm.price"
+            placeholder="请输入内容"
+          ></el-input>
         </el-form-item>
         <el-form-item label="里程">
-          <el-input v-model="input8" placeholder="请输入内容"></el-input>
+          <el-input
+            v-model="taxiForm.mileage"
+            placeholder="请输入内容"
+          ></el-input>
         </el-form-item>
         <el-form-item label="备注">
-          <el-input v-model="input9" placeholder="请输入内容"></el-input>
+          <el-input v-model="taxiForm.note" placeholder="请输入内容"></el-input>
         </el-form-item>
       </el-form>
       <div style="margin-bottom: 25px; position: relative; left: 100px">
-        <el-button type="primary" round @click="open2">提交审核</el-button>
+        <el-button type="primary" round @click="save2audit">提交审核</el-button>
       </div>
     </div>
   </div>
 </template>
 
 <script>
+import { getToken } from '@/utils/auth'
+import request from '@/utils/request'
 export default {
   // 定义数据
   data() {
     return {
-      input1: '',
-      input2: '',
-      input3: '',
-      input4: '',
-      input5: '',
-      input6: '',
-      input7: '',
-      input8: '',
-      input9: '',
-      dialogImageUrl: '',
-      dialogVisible: false, //文件上传对话框是否显示
-      BASE_API: process.env.VUE_APP_BASE_API, //获取后端接口地址
+      taxiForm: {
+        taxiId: '',
+        invoiceId: '',
+        taxiDaima: '',
+        taxiHaoma: '',
+        carNo: '',
+        taxiDate: '',
+        taxiTime: '',
+        amount: '',
+        price: '',
+        mileage: '',
+        note: '',
+      },
+      imageUrl: '',
+      BASE_API: process.env.VUE_APP_BASE_API, //获取后端接口地址 /dev-api
+      myHeader: {
+        token: getToken(),
+      },
     }
   },
-
   methods: {
+    // 文件移除
     handleRemove(file, fileList) {
-      console.log(file, fileList)
+      console.log('文件移除触发', file, fileList)
     },
-    handlePictureCardPreview(file) {
-      this.dialogImageUrl = file.url
-      this.dialogVisible = true
+    // 文件预览
+    handlePreview(file) {
+      console.log('文件移除触发', file)
     },
-    open1() {
-      this.$confirm('此操作将自动识别发票信息并填入框中, 是否继续?', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-      })
-        .then(() => {
-          this.$message({
-            type: 'success',
-            message: '导入成功',
-          })
-        })
-        .catch(() => {
-          this.$message({
-            type: 'info',
-            message: '已取消',
-          })
-        })
+    // 文件超过限制
+    handleExceed(files, fileList) {
+      this.$message.warning(
+        `当前限制选择 1 个文件，本次已选择了 ${files.length} 个文件`
+      )
     },
-    open2() {
+    handlerSuccess(res, file) {
+      this.taxiForm = res.data.taxiDetail
+      this.imageUrl = res.data.invoice.netImgPath
+    },
+    identifyTaxiInfo() {
+      console.log('点击识别发票信息')
+      this.$refs.upload.submit()
+    },
+    save2audit() {
       this.$confirm('是否确认提交发票信息?', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
       })
         .then(() => {
-          this.$message({
-            type: 'success',
-            message: '提交成功',
-          })
+          // 调用axios请求后端接口
+          const res = request({
+            url: '/taxi/save',
+            method: 'post',
+            data: this.taxiForm,
+          }).then(
+            // 清空表单
+            // this.$refs.taxiFormRef.resetFields(),
+            this.$message({
+              type: 'success',
+              message: '提交成功',
+            })
+          )
         })
         .catch(() => {
           this.$message({
@@ -146,3 +187,29 @@ export default {
   },
 }
 </script>
+
+<style scoped>
+.taxi-uploader .el-upload {
+  border: 1px dashed #d9d9d9;
+  border-radius: 6px;
+  cursor: pointer;
+  position: relative;
+  overflow: hidden;
+}
+.taxi-uploader .el-upload:hover {
+  border-color: #409eff;
+}
+.taxi-uploader-icon {
+  font-size: 28px;
+  color: #8c939d;
+  /* width: 178px;
+  height: 178px;
+  line-height: 178px; */
+  text-align: center;
+}
+.taxi {
+  width: 178px;
+  height: 178px;
+  display: block;
+}
+</style>

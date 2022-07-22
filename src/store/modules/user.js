@@ -32,7 +32,6 @@ const actions = {
   async login({ commit }, userInfo) {
     const { username, password } = userInfo;
     let result = await login({ username: username.trim(), password: password });
-    console.log("hahaha", result);
     if (result.code === 200) {
       commit("SET_TOKEN", result.data.token);
       setToken(result.data.token);
