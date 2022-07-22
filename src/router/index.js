@@ -118,14 +118,14 @@ export const constantRoutes = [
       {
         path: 'create',
         name: 'viewCreate',
-        component: () => import('@/views/core/view/form'),
+        component: () => import('@/views/core/review/form'),
         meta: { title: '审核表单' },
       },
       {
         // :id 是一个占位符，表示这部分url会是任何一个id
         path: 'edit/:id',
         name: 'coreIntegralGradeEdit',
-        component: () => import('@/views/core/integral-grade/form'),
+        component: () => import('@/views/core/review/form'),
         meta: { title: '编辑积分等级' },
         hidden: true, //隐藏
       },
