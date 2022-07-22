@@ -95,12 +95,12 @@ export const constantRoutes = [
 
   {
     // 父路由
-    path: '/core/integral-grade',
+    path: '/core/review',
     component: Layout,
     // 如果直接访问父路由，则会跳转到其下的list子路由
-    redirect: '/core/integral-grade/list',
+    redirect: '/core/review/list',
     name: 'coreIntegralGrade',
-    meta: { title: '积分等级管理', icon: 'el-icon-s-marketing' },
+    meta: { title: '发票审核', icon: 'el-icon-s-marketing' },
     // 默认值false，当父节点只有一个子节点时，不显示父节点
     // true，任何时候都显示父节点
     alwaysShow: true,
@@ -109,17 +109,17 @@ export const constantRoutes = [
         // 子路由，父路由加上子路由即为一个真正的路由
         path: 'list',
         // 每个路由节点的name不能相同
-        name: 'coreIntegralGradeList',
+        name: 'reviewList',
         // 执行template模板组件
-        component: () => import('@/views/core/integral-grade/list'),
+        component: () => import('@/views/core/review/list'),
         // 定义导航标题
-        meta: { title: '积分等级列表' },
+        meta: { title: '审核列表' },
       },
       {
         path: 'create',
-        name: 'coreIntegralGradeCreate',
-        component: () => import('@/views/core/integral-grade/form'),
-        meta: { title: '新增积分等级' },
+        name: 'viewCreate',
+        component: () => import('@/views/core/view/form'),
+        meta: { title: '审核表单' },
       },
       {
         // :id 是一个占位符，表示这部分url会是任何一个id
