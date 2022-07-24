@@ -11,11 +11,12 @@
       </div>
 
       <el-upload
-        action="BASE_API + '/admin/core/dict/import'"
+        action="BASE_API + '/train/identify'"
         list-type="picture-card"
         :auto-upload="false"
         :on-preview="handlePictureCardPreview"
         :on-remove="handleRemove"
+        :limit="1"
         accept=".jpg, .jpeg, .png, .pdf"
       >
         <i class="el-icon-plus"></i>
@@ -45,43 +46,43 @@
       </div>
       <el-form label-width="90px">
         <el-form-item label="票号">
-          <el-input v-model="input1" placeholder="请输入内容"></el-input>
+          <el-input v-model="ticketNo" placeholder="请输入内容"></el-input>
         </el-form-item>
         <el-form-item label="检票口">
-          <el-input v-model="input2" placeholder="请输入内容"></el-input>
+          <el-input v-model="ticketCheck" placeholder="请输入内容"></el-input>
         </el-form-item>
         <el-form-item label="出发站">
-          <el-input v-model="input3" placeholder="请输入内容"></el-input>
+          <el-input v-model="stationFrom" placeholder="请输入内容"></el-input>
         </el-form-item>
         <el-form-item label="到达站">
-          <el-input v-model="input4" placeholder="请输入内容"></el-input>
+          <el-input v-model="stationTo" placeholder="请输入内容"></el-input>
         </el-form-item>
         <el-form-item label="发车日期">
-          <el-input v-model="input5" placeholder="请输入内容"></el-input>
+          <el-input v-model="goDate" placeholder="请输入内容"></el-input>
         </el-form-item>
         <el-form-item label="开车时间">
-          <el-input v-model="input6" placeholder="请输入内容"></el-input>
+          <el-input v-model="gotime" placeholder="请输入内容"></el-input>
         </el-form-item>
         <el-form-item label="车次">
-          <el-input v-model="input7" placeholder="请输入内容"></el-input>
+          <el-input v-model="train" placeholder="请输入内容"></el-input>
         </el-form-item>
         <el-form-item label="座位号">
-          <el-input v-model="input8" placeholder="请输入内容"></el-input>
+          <el-input v-model="seat" placeholder="请输入内容"></el-input>
         </el-form-item>
         <el-form-item label="姓名">
-          <el-input v-model="input9" placeholder="请输入内容"></el-input>
+          <el-input v-model="name" placeholder="请输入内容"></el-input>
         </el-form-item>
         <el-form-item label="身份证号码">
-          <el-input v-model="input10" placeholder="请输入内容"></el-input>
+          <el-input v-model="identity" placeholder="请输入内容"></el-input>
         </el-form-item>
         <el-form-item label="票价">
-          <el-input v-model="input11" placeholder="请输入内容"></el-input>
+          <el-input v-model="amount" placeholder="请输入内容"></el-input>
         </el-form-item>
         <el-form-item label="席别">
-          <el-input v-model="input12" placeholder="请输入内容"></el-input>
+          <el-input v-model="seatType" placeholder="请输入内容"></el-input>
         </el-form-item>
         <el-form-item label="备注">
-          <el-input v-model="input13" placeholder="请输入内容"></el-input>
+          <el-input v-model="note" placeholder="请输入内容"></el-input>
         </el-form-item>
       </el-form>
       <div style="margin-bottom: 25px; position: relative; left: 90px">
@@ -96,19 +97,19 @@ export default {
   // 定义数据
   data() {
     return {
-      input1: '',
-      input2: '',
-      input3: '',
-      input4: '',
-      input5: '',
-      input6: '',
-      input7: '',
-      input8: '',
-      input9: '',
-      input10: '',
-      input11: '',
-      input12: '',
-      input13: '',
+      ticketNo: '',
+      ticketCheck: '',
+      stationFrom: '',
+      stationTo: '',
+      goDate: '',
+      gotime: '',
+      train: '',
+      seat: '',
+      name: '',
+      identity: '',
+      amount: '',
+      seatType: '',
+      note: '',
       dialogImageUrl: '',
       dialogVisible: false, //文件上传对话框是否显示
       BASE_API: process.env.VUE_APP_BASE_API, //获取后端接口地址

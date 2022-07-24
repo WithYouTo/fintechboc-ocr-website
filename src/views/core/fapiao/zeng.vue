@@ -19,6 +19,7 @@
         :auto-upload="false"
         :on-preview="handlePictureCardPreview"
         :on-remove="handleRemove"
+        :limit="1"
         accept=".jpg, .jpeg, .png"
       >
         <i class="el-icon-plus"></i>
@@ -49,70 +50,121 @@
       </div>
       <el-form label-width="150px">
         <el-form-item label="购货方名称">
-          <el-input v-model="input1" placeholder="请输入内容"></el-input>
+          <el-input
+            v-model="invoicePayerName"
+            placeholder="请输入内容"
+          ></el-input>
         </el-form-item>
         <el-form-item label="购货方纳税人识别号">
-          <el-input v-model="input2" placeholder="请输入内容"></el-input>
+          <el-input
+            v-model="invoiceRatePayerId"
+            placeholder="请输入内容"
+          ></el-input>
         </el-form-item>
         <el-form-item label="购货方地址和电话">
-          <el-input v-model="input3" placeholder="请输入内容"></el-input>
+          <el-input
+            v-model="invoicePayerAddrTell"
+            placeholder="请输入内容"
+          ></el-input>
         </el-form-item>
         <el-form-item label="购货方开户行及账号">
-          <el-input v-model="input4" placeholder="请输入内容"></el-input>
+          <el-input
+            v-model="invoicePayerBankAccount"
+            placeholder="请输入内容"
+          ></el-input>
         </el-form-item>
         <el-form-item label="密码区">
-          <el-input v-model="input5" placeholder="请输入内容"></el-input>
+          <el-input
+            v-model="cryptographicArea"
+            placeholder="请输入内容"
+          ></el-input>
         </el-form-item>
         <el-form-item label="发票代码">
-          <el-input v-model="input6" placeholder="请输入内容"></el-input>
+          <el-input v-model="invoiceDaima" placeholder="请输入内容"></el-input>
         </el-form-item>
         <el-form-item label="发票号码">
-          <el-input v-model="input7" placeholder="请输入内容"></el-input>
+          <el-input v-model="invoiceHaoma" placeholder="请输入内容"></el-input>
         </el-form-item>
         <el-form-item label="开票日期">
-          <el-input v-model="input8" placeholder="请输入内容"></el-input>
+          <el-input
+            v-model="invoiceIssueDate"
+            placeholder="请输入内容"
+          ></el-input>
         </el-form-item>
         <el-form-item label="货物或服务名称">
-          <el-input v-model="input9" placeholder="请输入内容"></el-input>
+          <el-input
+            v-model="invoiceGoodsList"
+            placeholder="请输入内容"
+          ></el-input>
         </el-form-item>
         <el-form-item label="单价">
-          <el-input v-model="input10" placeholder="请输入内容"></el-input>
+          <el-input v-model="unitPrice" placeholder="请输入内容"></el-input>
         </el-form-item>
         <el-form-item label="金额">
-          <el-input v-model="input11" placeholder="请输入内容"></el-input>
+          <el-input
+            v-model="invoicePriceList"
+            placeholder="请输入内容"
+          ></el-input>
         </el-form-item>
         <el-form-item label="税率">
-          <el-input v-model="input12" placeholder="请输入内容"></el-input>
+          <el-input
+            v-model="invoiceTaxRateList"
+            placeholder="请输入内容"
+          ></el-input>
         </el-form-item>
         <el-form-item label="税额">
-          <el-input v-model="input13" placeholder="请输入内容"></el-input>
+          <el-input
+            v-model="invoiceTaxList"
+            placeholder="请输入内容"
+          ></el-input>
         </el-form-item>
         <el-form-item label="合计金额">
-          <el-input v-model="input14" placeholder="请输入内容"></el-input>
+          <el-input v-model="invoiceTotal" placeholder="请输入内容"></el-input>
         </el-form-item>
         <el-form-item label="合计税率">
-          <el-input v-model="input15" placeholder="请输入内容"></el-input>
+          <el-input
+            v-model="invoiceTaxTotal"
+            placeholder="请输入内容"
+          ></el-input>
         </el-form-item>
         <el-form-item label="价税合计大写总额">
-          <el-input v-model="input16" placeholder="请输入内容"></el-input>
+          <el-input
+            v-model="invoiceTotalCoverTax"
+            placeholder="请输入内容"
+          ></el-input>
         </el-form-item>
         <el-form-item label="价税合计小写总额">
-          <el-input v-model="input17" placeholder="请输入内容"></el-input>
+          <el-input
+            v-model="invoiceTotalCoverTaxDigits"
+            placeholder="请输入内容"
+          ></el-input>
         </el-form-item>
         <el-form-item label="销售方名称">
-          <el-input v-model="input18" placeholder="请输入内容"></el-input>
+          <el-input
+            v-model="invoiceSellerName"
+            placeholder="请输入内容"
+          ></el-input>
         </el-form-item>
         <el-form-item label="销售方纳税人识别号">
-          <el-input v-model="input19" placeholder="请输入内容"></el-input>
+          <el-input
+            v-model="invoiceSellerId"
+            placeholder="请输入内容"
+          ></el-input>
         </el-form-item>
         <el-form-item label="销售方地址和电话">
-          <el-input v-model="input20" placeholder="请输入内容"></el-input>
+          <el-input
+            v-model="invoiceSellerAddrTell"
+            placeholder="请输入内容"
+          ></el-input>
         </el-form-item>
         <el-form-item label="销售方开户行及账号">
-          <el-input v-model="input21" placeholder="请输入内容"></el-input>
+          <el-input
+            v-model="invoiceSellerBankAccount"
+            placeholder="请输入内容"
+          ></el-input>
         </el-form-item>
         <el-form-item label="备注">
-          <el-input v-model="input22" placeholder="请输入内容"></el-input>
+          <el-input v-model="note" placeholder="请输入内容"></el-input>
         </el-form-item>
       </el-form>
       <div style="margin-bottom: 25px; position: relative; left: 150px">
@@ -167,28 +219,28 @@ export default {
       active: 0,
       borrowerStatus: null,
       submitBtnDisabled: false,
-      input1: '',
-      input2: '',
-      input3: '',
-      input4: '',
-      input5: '',
-      input6: '',
-      input7: '',
-      input8: '',
-      input9: '',
-      input10: '',
-      input11: '',
-      input12: '',
-      input13: '',
-      input14: '',
-      input15: '',
-      input16: '',
-      input17: '',
-      input18: '',
-      input19: '',
-      input20: '',
-      input21: '',
-      input22: '',
+      invoicePayerName: '',
+      invoiceRatePayerId: '',
+      invoicePayerAddrTell: '',
+      invoicePayerBankAccount: '',
+      cryptographicArea: '',
+      invoiceDaima: '',
+      invoiceHaoma: '',
+      invoiceIssueDate: '',
+      invoiceGoodsList: '',
+      unitPrice: '',
+      invoicePriceList: '',
+      invoiceTaxRateList: '',
+      invoiceTaxList: '',
+      invoiceTotal: '',
+      invoiceTaxTotal: '',
+      invoiceTotalCoverTax: '',
+      invoiceTotalCoverTaxDigits: '',
+      invoiceSellerName: '',
+      invoiceSellerId: '',
+      invoiceSellerAddrTell: '',
+      invoiceSellerBankAccount: '',
+      note: '',
       dialogImageUrl: '',
       dialogVisible: false, //文件上传对话框是否显示
       BASE_API: process.env.VUE_APP_BASE_API, //获取后端接口地址
