@@ -7,37 +7,37 @@ export default {
   list() {
     // 调用axios的初始化模块，发现远程ajax请求
     return request({
-      url: '/admin/core/integralGrade/list',
+      url: '/admin/core/review/list',
       method: 'get',
     })
   },
   removeById(id) {
     return request({
-      url: '/admin/core/integralGrade/remove1/' + id,
+      url: '/admin/core/review/remove1/' + id,
       method: 'delete',
     })
   },
 
-  save(integralGrade) {
+  save(review) {
     return request({
-      url: '/admin/core/integralGrade/save',
+      url: '/admin/core/review/save',
       method: 'post',
-      data: integralGrade,
+      data: review,
     })
   },
 
   getById(id) {
     return request({
-      url: '/admin/core/integralGrade/get/' + id,
+      url: '/admin/core/review/get/' + id,
       method: 'get',
     })
   },
 
-  updateById(integralGrade) {
+  updateById(review) {
     return request({
-      url: '/admin/core/integralGrade/update',
+      url: '/admin/core/review/update',
       method: 'put',
-      data: integralGrade,
+      data: review,
     })
   },
 }
