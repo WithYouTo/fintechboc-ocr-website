@@ -3,13 +3,13 @@
     <!-- 输入表单 -->
     <el-form label-width="120px">
       <el-form-item label="借款额度">
-        <el-input-number v-model="integralGrade.borrowAmount" :min="0" />
+        <el-input-number v-model="review.borrowAmount" :min="0" />
       </el-form-item>
       <el-form-item label="积分区间开始">
-        <el-input-number v-model="integralGrade.integralStart" :min="0" />
+        <el-input-number v-model="review.integralStart" :min="0" />
       </el-form-item>
       <el-form-item label="积分区间结束">
-        <el-input-number v-model="integralGrade.integralEnd" :min="0" />
+        <el-input-number v-model="review.integralEnd" :min="0" />
       </el-form-item>
       <el-form-item>
         <el-button
@@ -24,13 +24,13 @@
   </div>
 </template>
 <script>
-import integralGradeApi from '@/api/core/integral-grade'
+import reviewApi from '@/api/core/review'
 
 export default {
   data() {
     return {
       saveBtnDisabled: false,
-      integralGrade: {},
+      review: {},
     }
   },
 
@@ -44,15 +44,15 @@ export default {
   methods: {
     // 根据id查询记录
     fetchById(id) {
-      integralGradeApi.getById(id).then((response) => {
-        this.integralGrade = response.data.record
+      reviewApi.getById(id).then((response) => {
+        this.review = response.data.record
       })
     },
 
     saveOrUpdate() {
       // 禁用保存按钮
       this.saveBtnDisabled = true
-      if (!this.integralGrade.id) {
+      if (!this.review.id) {
         this.saveData()
       } else {
         this.updateData()
@@ -60,14 +60,14 @@ export default {
     },
 
     saveData() {
-      integralGradeApi.save(this.integralGrade).then((response) => {
+      reviewApi.save(this.review).then((response) => {
         this.$message.success(response.message)
         this.$router.push('/core/integral-grade/list')
       })
     },
     // 根据id更新记录
     updateData() {
-      integralGradeApi.updateById(this.integralGrade).then((response) => {
+      reviewApi.updateById(this.review).then((response) => {
         this.$message.success(response.message)
         this.$router.push('/core/integral-grade/list')
       })
