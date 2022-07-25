@@ -74,7 +74,7 @@ export const constantRoutes = [
         // 每个路由节点的name不能相同
         name: 'fapiao-zeng',
         // 执行template模板组件
-        component: () => import('@/views/core/fapiao/zeng'),
+        component: () => import('@/views/core/fapiao/invoice'),
         // 定义导航标题
         meta: { title: '增值税发票报销' },
       },
@@ -89,6 +89,12 @@ export const constantRoutes = [
         name: 'fapiao-taxi',
         component: () => import('@/views/core/fapiao/taxi'),
         meta: { title: '出租车票报销' },
+      },
+      {
+        path: 'record',
+        name: 'fapiao-record',
+        component: () => import('@/views/core/fapiao/record'),
+        meta: { title: '我的申请' },
       },
     ],
   },
