@@ -1,11 +1,13 @@
 <template>
   <div class="app-container">
-    <el-steps :active="1" align-center>
+    <el-steps :active="active" align-center>
       <el-step title="填写申报信息"></el-step>
       <el-step title="提交后台审核"></el-step>
-      <el-step title="等待审核结果"></el-step>
     </el-steps>
-    <div style="width: 400px; position: absolute; left: 170px; top: 120px">
+    <div
+      v-if="active === 0"
+      style="width: 400px; position: absolute; left: 170px; top: 120px"
+    >
       <div style="margin-bottom: 10px">
         <p>请输入出租车票:</p>
       </div>
@@ -27,20 +29,24 @@
         <img v-if="imageUrl" :src="imageUrl" class="taxi" />
         <i v-else class="el-icon-plus taxi-uploader-icon"></i>
       </el-upload>
+      <el-dialog :visible.sync="dialogVisible">
+        <img width="100%" :src="dialogImageUrl" alt="" />
+      </el-dialog>
     </div>
     <div
+      v-if="active === 0"
       style="
-        width: 500px;
+        width: 550px;
         height: 785px;
         position: relative;
         left: 560px;
         top: 55px;
       "
     >
-      <div style="margin-bottom: 25px">
+      <div style="width: 200px; height: 60px; position: relative; left: 100px">
         <el-button
           type="primary"
-          size="mini"
+          size="medium"
           icon="el-icon-download"
           @click="identifyTaxiInfo"
         >
@@ -101,7 +107,32 @@
         </el-form-item>
       </el-form>
       <div style="margin-bottom: 25px; position: relative; left: 100px">
-        <el-button type="primary" round @click="save2audit">提交审核</el-button>
+        <el-button
+          type="primary"
+          round
+          :disable="submitBtnDisabled"
+          @click="save2audit"
+        >
+          提交审核
+        </el-button>
+      </div>
+    </div>
+    <div v-if="active === 1">
+      <div
+        style="margin-top: 40px; width: 938px; left: 156px; position: relative"
+      >
+        <el-alert
+          title="您的报销申请已成功提交，请耐心等待"
+          type="success"
+          show-icon
+          :closable="false"
+        >
+          我们将在尽快完成审核，审核时间为周一至周五8:30至5:30。
+        </el-alert>
+      </div>
+      <div style="top: 10px; height: 60px; position: relative; left: 860px">
+        <el-button @click="jumpToNew">再次申请</el-button>
+        <el-button type="primary" @click="jumpToRecord">查看申请记录</el-button>
       </div>
     </div>
   </div>
@@ -114,6 +145,9 @@ export default {
   // 定义数据
   data() {
     return {
+      active: 0,
+      borrowerStatus: null,
+      submitBtnDisabled: false,
       taxiForm: {
         taxiId: '',
         invoiceId: '',
@@ -127,6 +161,8 @@ export default {
         mileage: '',
         note: '',
       },
+      dialogImageUrl: '',
+      dialogVisible: false, //文件上传对话框是否显示
       imageUrl: '',
       BASE_API: process.env.VUE_APP_BASE_API, //获取后端接口地址 /dev-api
       myHeader: {
@@ -141,7 +177,8 @@ export default {
     },
     // 文件预览
     handlePreview(file) {
-      console.log('文件移除触发', file)
+      this.dialogImageUrl = file.url
+      this.dialogVisible = true
     },
     // 文件超过限制
     handleExceed(files, fileList) {
@@ -171,6 +208,7 @@ export default {
           }).then(
             // 清空表单
             // this.$refs.taxiFormRef.resetFields(),
+            (this.active = 1),
             this.$message({
               type: 'success',
               message: '提交成功',
@@ -184,32 +222,14 @@ export default {
           })
         })
     },
+    jumpToNew() {
+      //指定跳转的地址
+      this.$router.go(0)
+    },
+    jumpToRecord() {
+      //指定跳转的地址
+      this.$router.replace('/core/fapiao/record')
+    },
   },
 }
 </script>
-
-<style scoped>
-.taxi-uploader .el-upload {
-  border: 1px dashed #d9d9d9;
-  border-radius: 6px;
-  cursor: pointer;
-  position: relative;
-  overflow: hidden;
-}
-.taxi-uploader .el-upload:hover {
-  border-color: #409eff;
-}
-.taxi-uploader-icon {
-  font-size: 28px;
-  color: #8c939d;
-  /* width: 178px;
-  height: 178px;
-  line-height: 178px; */
-  text-align: center;
-}
-.taxi {
-  width: 178px;
-  height: 178px;
-  display: block;
-}
-</style>
