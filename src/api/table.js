@@ -1,9 +1,10 @@
 import request from '@/utils/request'
 
-export function getList(params) {
+// 用户提交历史申报
+export function getList(data) {
   return request({
-    url: '/vue-admin-template/table/list',
-    method: 'get',
-    params,
+    url: "/history/user",
+    method: "post",
+    data
   })
 }
