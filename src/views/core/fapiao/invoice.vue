@@ -9,11 +9,11 @@
       style="width: 400px; position: absolute; left: 170px; top: 120px"
     >
       <div style="margin-bottom: 10px">
-        <p>请输入出租车票:</p>
+        <p>请输入增值税发票:</p>
       </div>
 
       <el-upload
-        :action="BASE_API + '/taxi/identify'"
+        :action="BASE_API + '/invoice/identify'"
         ref="upload"
         list-type="picture-card"
         :headers="myHeader"
@@ -26,8 +26,8 @@
         :limit="1"
       >
         <!-- <i class="el-icon-plus"></i> -->
-        <img v-if="imageUrl" :src="imageUrl" class="taxi" />
-        <i v-else class="el-icon-plus taxi-uploader-icon"></i>
+        <img v-if="imageUrl" :src="imageUrl" class="invoice" />
+        <i v-else class="el-icon-plus invoice-uploader-icon"></i>
       </el-upload>
       <el-dialog :visible.sync="dialogVisible">
         <img width="100%" :src="dialogImageUrl" alt="" />
@@ -37,76 +37,157 @@
       v-if="active === 0"
       style="
         width: 550px;
-        height: 785px;
+        height: 1600px;
         position: relative;
         left: 560px;
         top: 55px;
       "
     >
-      <div style="width: 200px; height: 60px; position: relative; left: 100px">
+      <div style="width: 200px; height: 60px; position: relative; left: 150px">
         <el-button
           type="primary"
           size="medium"
           icon="el-icon-download"
-          @click="identifyTaxiInfo"
+          @click="identifyInvoiceInfo"
         >
           识别发票信息
         </el-button>
       </div>
-      <el-form label-width="100px" ref="taxiFormRef" :model="taxiForm">
+      <el-form label-width="150px" ref="invoiceFormRef" :model="invoiceForm">
+        <el-form-item label="购货方名称">
+          <el-input
+            v-model="invoiceForm.invoicePayerName"
+            placeholder="请输入内容"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="购货方纳税人识别号">
+          <el-input
+            v-model="invoiceForm.invoiceRatePayerId"
+            placeholder="请输入内容"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="购货方地址和电话">
+          <el-input
+            v-model="invoiceForm.invoicePayerAddrTell"
+            placeholder="请输入内容"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="购货方开户行及账号">
+          <el-input
+            v-model="invoiceForm.invoicePayerBankAccount"
+            placeholder="请输入内容"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="密码区">
+          <el-input
+            v-model="invoiceForm.cryptographicArea"
+            placeholder="请输入内容"
+          ></el-input>
+        </el-form-item>
         <el-form-item label="发票代码">
           <el-input
-            v-model="taxiForm.taxiDaima"
+            v-model="invoiceForm.invoiceDaima"
             placeholder="请输入内容"
           ></el-input>
         </el-form-item>
         <el-form-item label="发票号码">
           <el-input
-            v-model="taxiForm.taxiHaoma"
+            v-model="invoiceForm.invoiceHaoma"
             placeholder="请输入内容"
           ></el-input>
         </el-form-item>
-        <el-form-item label="车牌号">
+        <el-form-item label="开票日期">
           <el-input
-            v-model="taxiForm.carNo"
+            v-model="invoiceForm.invoiceIssueDate"
             placeholder="请输入内容"
           ></el-input>
         </el-form-item>
-        <el-form-item label="乘车日期">
+        <el-form-item label="货物或服务名称">
           <el-input
-            v-model="taxiForm.taxiDate"
-            placeholder="请输入内容"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="乘车时间区间">
-          <el-input
-            v-model="taxiForm.taxiTime"
-            placeholder="请输入内容"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="乘车金额">
-          <el-input
-            v-model="taxiForm.amount"
+            v-model="invoiceForm.invoiceGoodsList"
             placeholder="请输入内容"
           ></el-input>
         </el-form-item>
         <el-form-item label="单价">
           <el-input
-            v-model="taxiForm.price"
+            v-model="invoiceForm.unitPrice"
             placeholder="请输入内容"
           ></el-input>
         </el-form-item>
-        <el-form-item label="里程">
+        <el-form-item label="金额">
           <el-input
-            v-model="taxiForm.mileage"
+            v-model="invoiceForm.invoicePriceList"
+            placeholder="请输入内容"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="税率">
+          <el-input
+            v-model="invoiceForm.invoiceTaxRateList"
+            placeholder="请输入内容"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="税额">
+          <el-input
+            v-model="invoiceForm.invoiceTaxList"
+            placeholder="请输入内容"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="合计金额">
+          <el-input
+            v-model="invoiceForm.invoiceTotal"
+            placeholder="请输入内容"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="合计税率">
+          <el-input
+            v-model="invoiceForm.invoiceTaxTotal"
+            placeholder="请输入内容"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="价税合计大写总额">
+          <el-input
+            v-model="invoiceForm.invoiceTotalCoverTax"
+            placeholder="请输入内容"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="价税合计小写总额">
+          <el-input
+            v-model="invoiceForm.invoiceTotalCoverTaxDigits"
+            placeholder="请输入内容"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="销售方名称">
+          <el-input
+            v-model="invoiceForm.invoiceSellerName"
+            placeholder="请输入内容"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="销售方纳税人识别号">
+          <el-input
+            v-model="invoiceForm.invoiceSellerId"
+            placeholder="请输入内容"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="销售方地址和电话">
+          <el-input
+            v-model="invoiceForm.invoiceSellerAddrTell"
+            placeholder="请输入内容"
+          ></el-input>
+        </el-form-item>
+        <el-form-item label="销售方开户行及账号">
+          <el-input
+            v-model="invoiceForm.invoiceSellerBankAccount"
             placeholder="请输入内容"
           ></el-input>
         </el-form-item>
         <el-form-item label="备注">
-          <el-input v-model="taxiForm.note" placeholder="请输入内容"></el-input>
+          <el-input
+            v-model="invoiceForm.note"
+            placeholder="请输入内容"
+          ></el-input>
         </el-form-item>
       </el-form>
-      <div style="margin-bottom: 25px; position: relative; left: 100px">
+      <div style="margin-bottom: 25px; position: relative; left: 150px">
         <el-button
           type="primary"
           round
@@ -148,17 +229,28 @@ export default {
       active: 0,
       borrowerStatus: null,
       submitBtnDisabled: false,
-      taxiForm: {
-        taxiId: '',
-        invoiceId: '',
-        taxiDaima: '',
-        taxiHaoma: '',
-        carNo: '',
-        taxiDate: '',
-        taxiTime: '',
-        amount: '',
-        price: '',
-        mileage: '',
+      invoiceForm: {
+        invoicePayerName: '',
+        invoiceRatePayerId: '',
+        invoicePayerAddrTell: '',
+        invoicePayerBankAccount: '',
+        cryptographicArea: '',
+        invoiceDaima: '',
+        invoiceHaoma: '',
+        invoiceIssueDate: '',
+        invoiceGoodsList: '',
+        unitPrice: '',
+        invoicePriceList: '',
+        invoiceTaxRateList: '',
+        invoiceTaxList: '',
+        invoiceTotal: '',
+        invoiceTaxTotal: '',
+        invoiceTotalCoverTax: '',
+        invoiceTotalCoverTaxDigits: '',
+        invoiceSellerName: '',
+        invoiceSellerId: '',
+        invoiceSellerAddrTell: '',
+        invoiceSellerBankAccount: '',
         note: '',
       },
       dialogImageUrl: '',
@@ -170,6 +262,7 @@ export default {
       },
     }
   },
+
   methods: {
     // 文件移除
     handleRemove(file, fileList) {
@@ -187,10 +280,10 @@ export default {
       )
     },
     handlerSuccess(res, file) {
-      this.taxiForm = res.data.taxiDetail
+      this.invoiceForm = res.data.invoiceDetail
       this.imageUrl = res.data.invoice.netImgPath
     },
-    identifyTaxiInfo() {
+    identifyInvoiceInfo() {
       console.log('点击识别发票信息')
       this.$refs.upload.submit()
     },
@@ -202,12 +295,12 @@ export default {
         .then(() => {
           // 调用axios请求后端接口
           const res = request({
-            url: '/taxi/save',
+            url: '/invoice/save',
             method: 'post',
-            data: this.taxiForm,
+            data: this.invoiceForm,
           }).then(
             // 清空表单
-            // this.$refs.taxiFormRef.resetFields(),
+            // this.$refs.invoiceFormRef.resetFields(),
             (this.active = 1),
             this.$message({
               type: 'success',
