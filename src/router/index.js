@@ -61,7 +61,7 @@ export const constantRoutes = [
     path: '/core/fapiao',
     component: Layout,
     // 如果直接访问父路由，则会跳转到其下的list子路由
-    redirect: '/core/fapiao/zeng',
+    redirect: '/core/fapiao/invoice',
     name: 'fapiao',
     meta: { title: '发票报销', icon: 'el-icon-tickets' },
     // 默认值false，当父节点只有一个子节点时，不显示父节点
@@ -70,9 +70,9 @@ export const constantRoutes = [
     children: [
       {
         // 子路由，父路由加上子路由即为一个真正的路由
-        path: 'zeng',
+        path: 'invoice',
         // 每个路由节点的name不能相同
-        name: 'fapiao-zeng',
+        name: 'fapiao-invoice',
         // 执行template模板组件
         component: () => import('@/views/core/fapiao/invoice'),
         // 定义导航标题
@@ -95,6 +95,48 @@ export const constantRoutes = [
         name: 'fapiao-record',
         component: () => import('@/views/core/fapiao/record'),
         meta: { title: '我的申请' },
+      },
+      {
+        path: 'detailinvoice/:id',
+        name: 'fapiao-detail-invoice',
+        component: () => import('@/views/core/fapiao/detailinvoice'),
+        meta: { title: '查看增值税发票' },
+        hidden: true,
+      },
+      {
+        path: 'detailtrain/:id',
+        name: 'fapiao-detail-train',
+        component: () => import('@/views/core/fapiao/detailtrain'),
+        meta: { title: '查看火车票' },
+        hidden: true,
+      },
+      {
+        path: 'detailtaxi/:id',
+        name: 'fapiao-detail-taxi',
+        component: () => import('@/views/core/fapiao/detailtaxi'),
+        meta: { title: '查看出租车票' },
+        hidden: true,
+      },
+      {
+        path: 'modifydetailtaxi/:id',
+        name: 'fapiao-modify-detail-taxi',
+        component: () => import('@/views/core/fapiao/modifydetailtaxi'),
+        meta: { title: '查看修改出租车票' },
+        hidden: true,
+      },
+      {
+        path: 'modifydetailtrain/:id',
+        name: 'fapiao-modify-detail-train',
+        component: () => import('@/views/core/fapiao/modifydetailtrain'),
+        meta: { title: '查看修改火车票' },
+        hidden: true,
+      },
+      {
+        path: 'modifydetailinvoice/:id',
+        name: 'fapiao-modify-detail-invoice',
+        component: () => import('@/views/core/fapiao/modifydetailinvoice'),
+        meta: { title: '查看修改增值税发票' },
+        hidden: true,
       },
     ],
   },
