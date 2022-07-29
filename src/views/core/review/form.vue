@@ -1,77 +1,136 @@
 <template>
   <div class="app-container">
-    <!-- 输入表单 -->
-    <el-form label-width="120px">
-      <el-form-item label="借款额度">
-        <el-input-number v-model="review.borrowAmount" :min="0" />
-      </el-form-item>
-      <el-form-item label="积分区间开始">
-        <el-input-number v-model="review.integralStart" :min="0" />
-      </el-form-item>
-      <el-form-item label="积分区间结束">
-        <el-input-number v-model="review.integralEnd" :min="0" />
-      </el-form-item>
-      <el-form-item>
-        <el-button
-          :disabled="saveBtnDisabled"
-          type="primary"
-          @click="saveOrUpdate()"
-        >
-          保存
-        </el-button>
-      </el-form-item>
-    </el-form>
+    <el-table 
+      v-loading="listLoading"
+      :data="list"
+      :cell-style="{ 'text-align': 'center'}"  
+      :header-cell-style="{ 'text-align': 'center'}" 
+      style="width: 100%"
+      element-loading-text="数据加载中"
+      border
+      fit
+      highlight-current-row
+    >
+      <el-table-column type="index"></el-table-column>
+      <el-table-column
+        prop="username"
+        label="申报人"
+        width="200"
+      ></el-table-column>
+      <el-table-column prop="applyDate" label="申报日期"></el-table-column>
+      <el-table-column
+        prop="invoiceType"
+        label="发票类型"
+        :formatter="invoiceTypeFormat"
+      ></el-table-column>
+      <el-table-column prop="invoiceAmount" label="发票金额"></el-table-column>
+      <!-- <el-table-column prop="status" label="状态"></el-table-column> -->
+       <el-table-column prop="status" label="审核状态" width="110">
+       <template slot-scope="scope">
+          <el-tag :type="scope.row.status | statusFilter" v-if="scope.row.status===0">待审核</el-tag>
+          <el-tag :type="scope.row.status | statusFilter" v-if="scope.row.status===1">已通过</el-tag>
+          <el-tag :type="scope.row.status | statusFilter" v-if="scope.row.status===2">待修改</el-tag>
+          <el-tag :type="scope.row.status | statusFilter" v-if="scope.row.status===3">已拒绝</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="200px">
+        <template slot-scope="scope">
+          <el-button
+            v-if="scope.row.status===0"
+            type="primary"
+            icon="el-icon-edit"
+            size="mini"
+            @click="jumpToReviewDetail(scope.row)"
+          >
+            审核
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+
+    <el-pagination
+      @size-change="handleSizeChange"
+      @current-change="handleCurrentChange"
+      :current-page="pageParams.pageNum"
+      :page-sizes="[10, 20, 50, 100]"
+      :page-size="pageParams.pageSize"
+      layout="total, sizes, prev, pager, next, jumper"
+      :total="total"
+    ></el-pagination>
   </div>
 </template>
+
 <script>
-import reviewApi from '@/api/core/review'
+import { getHistory } from '@/api/table'
 
 export default {
+  filters: {
+    statusFilter(status) {
+      const statusMap = {
+        0: 'info',
+        1: 'success',
+        2: 'blue',
+        3: 'danger',
+      }
+      return statusMap[status]
+    },
+  },
   data() {
     return {
-      saveBtnDisabled: false,
-      review: {},
+      list: null,
+      listLoading: true,
+      total: 0,
+      pageParams: {
+        pageSize: 10,
+        pageNum: 1,
+      },
     }
   },
-
-  //页面渲染成功
   created() {
-    if (this.$route.params.id) {
-      this.fetchById(this.$route.params.id)
-    }
+    this.fetchData()
   },
-
   methods: {
-    // 根据id查询记录
-    fetchById(id) {
-      reviewApi.getById(id).then((response) => {
-        this.review = response.data.record
-      })
-    },
-
-    saveOrUpdate() {
-      // 禁用保存按钮
-      this.saveBtnDisabled = true
-      if (!this.review.id) {
-        this.saveData()
-      } else {
-        this.updateData()
+    async fetchData() {
+      this.listLoading = true
+      let response = await getHistory(this.pageParams)
+      if (response.code === 200) {
+        console.log('response', response)
+        this.list = response.data.records
+        this.total = response.data.total
+        this.listLoading = false
       }
     },
-
-    saveData() {
-      reviewApi.save(this.review).then((response) => {
-        this.$message.success(response.message)
-        this.$router.push('/core/integral-grade/list')
-      })
+    handleSizeChange(newSize) {
+      console.log(`每页 ${newSize} 条`)
+      this.pageParams.pageSize = newSize
+      this.fetchData()
     },
-    // 根据id更新记录
-    updateData() {
-      reviewApi.updateById(this.review).then((response) => {
-        this.$message.success(response.message)
-        this.$router.push('/core/integral-grade/list')
-      })
+    handleCurrentChange(val) {
+      console.log(`当前页: ${val}`)
+      this.pageParams.pageNum = val
+      this.fetchData()
     },
+    invoiceTypeFormat(row) {
+      console.log('row',row)
+      if (row.invoiceType === 'train') {
+        return '火车票'
+      } else if (row.invoiceType === 'taxi') {
+        return '出租车票'
+      } else if (row.invoiceType === 'invoice') {
+        return '增值税发票'
+      }
+    },
+    jumpToReviewDetail(rowInfo){
+        if(rowInfo.invoiceType==="train"){
+         this.$router.push('/core/reviewDetail/trainReview/' + rowInfo.id)
+        }
+        else if(rowInfo.invoiceType==="taxi"){
+         this.$router.push('/core/reviewDetail/taxiReview/' + rowInfo.id)
+        }
+        else if(rowInfo.invoiceType==="invoice"){
+         this.$router.push('/core/reviewDetail/vatReview/' + rowInfo.id)
+        }
+      }
   },
 }
 </script>

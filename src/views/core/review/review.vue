@@ -1,6 +1,6 @@
 <template>
   <div class="app-container">
-    <el-table
+    <el-table 
       v-loading="listLoading"
       :data="list"
       :cell-style="{ 'text-align': 'center'}"  
@@ -24,24 +24,25 @@
         :formatter="invoiceTypeFormat"
       ></el-table-column>
       <el-table-column prop="invoiceAmount" label="发票金额"></el-table-column>
-      <el-table-column prop="status" label="状态"></el-table-column>
+      <!-- <el-table-column prop="status" label="状态"></el-table-column> -->
+       <el-table-column prop="status" label="审核状态" width="110">
+       <template slot-scope="scope">
+          <el-tag :type="scope.row.status | statusFilter" v-if="scope.row.status===0">待审核</el-tag>
+          <el-tag :type="scope.row.status | statusFilter" v-if="scope.row.status===1">已通过</el-tag>
+          <el-tag :type="scope.row.status | statusFilter" v-if="scope.row.status===2">待修改</el-tag>
+          <el-tag :type="scope.row.status | statusFilter" v-if="scope.row.status===3">已拒绝</el-tag>
+        </template>
+      </el-table-column>
       <el-table-column label="操作" width="200px">
         <template slot-scope="scope">
           <el-button
+            v-if="scope.row.status===0"
             type="primary"
             icon="el-icon-edit"
             size="mini"
-            @click="showEditDialog(scope.row.id)"
+            @click="jumpToReviewDetail(scope.row)"
           >
-            编辑
-          </el-button>
-          <el-button
-            type="danger"
-            icon="el-icon-delete"
-            size="mini"
-            @click="removeBookInfo(scope.row.id)"
-          >
-            删除
+            审核
           </el-button>
         </template>
       </el-table-column>
@@ -66,9 +67,10 @@ export default {
   filters: {
     statusFilter(status) {
       const statusMap = {
-        published: 'success',
-        draft: 'gray',
-        deleted: 'danger',
+        0: 'info',
+        1: 'success',
+        2: 'blue',
+        3: 'danger',
       }
       return statusMap[status]
     },
@@ -118,12 +120,17 @@ export default {
         return '增值税发票'
       }
     },
+    jumpToReviewDetail(rowInfo){
+        if(rowInfo.invoiceType==="train"){
+         this.$router.push('/core/reviewDetail/trainReview/' + rowInfo.id)
+        }
+        else if(rowInfo.invoiceType==="taxi"){
+         this.$router.push('/core/reviewDetail/taxiReview/' + rowInfo.id)
+        }
+        else if(rowInfo.invoiceType==="invoice"){
+         this.$router.push('/core/reviewDetail/vatReview/' + rowInfo.id)
+        }
+      }
   },
 }
 </script>
-
-<style scoped>
-.el-pagination {
-  margin-top: 20px;
-}
-</style>

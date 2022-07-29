@@ -14,8 +14,6 @@
           {{ scope.$index }}
         </template>
       </el-table-column>
-
-      // prop 修改
       <el-table-column prop="invoiceType" label="待报销发票种类" />
       <el-table-column prop="applier" label="报销人" />
       <el-table-column prop="subbmitTime" label="提交时间" />
@@ -26,7 +24,6 @@
         </template>
       </el-table-column>
 
-      // 操作栏 待修改
       <el-table-column label="操作">
         <template slot-scope="scope">
           <router-link
@@ -55,17 +52,6 @@
 <script>
 import reviewApi from '@/api/core/review'
 export default {
-  // 新增的filter
-  filters: {
-    statusFilter(status) {
-      const statusMap = {
-        approved: 'success',
-        draft: 'gray',
-        rejected: 'danger'
-      }
-      return statusMap[status]
-    }
-  },
   // 定义数据模型
   data() {
     return {
