@@ -8,10 +8,15 @@ import getPageTitle from '@/utils/get-page-title'
 
 NProgress.configure({ showSpinner: false }) // NProgress Configuration
 
-const whiteList = ['/login'] // no redirect whitelist
+// const whiteList = ['/login',] // no redirect whitelist
+const whiteList = ['/login','/auth-redirect'] // no redirect whitelist
 
+// 设置路由前置守卫
+// to:要去哪个组件
+// from:从哪个组件来
+// next:函数 next()放行 next(false)不跳 next(路径)
 router.beforeEach(async(to, from, next) => {
-  // start progress bar
+  // start progress bar 开启进度条
   NProgress.start()
 
   // set page title
