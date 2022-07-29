@@ -25,9 +25,7 @@
         accept=".jpg, .jpeg, .png"
         :limit="1"
       >
-        <!-- <i class="el-icon-plus"></i> -->
-        <img v-if="imageUrl" :src="imageUrl" class="invoice" />
-        <i v-else class="el-icon-plus invoice-uploader-icon"></i>
+        <i class="el-icon-plus"></i>
       </el-upload>
       <el-dialog :visible.sync="dialogVisible">
         <img width="100%" :src="dialogImageUrl" alt="" />
@@ -49,6 +47,7 @@
           size="medium"
           icon="el-icon-download"
           @click="identifyInvoiceInfo"
+          v-loading.fullscreen.lock="fullscreenLoading"
         >
           识别发票信息
         </el-button>
@@ -229,7 +228,10 @@ export default {
       active: 0,
       borrowerStatus: null,
       submitBtnDisabled: false,
+      fullscreenLoading: false,
       invoiceForm: {
+        detailId: '',
+        invoiceId: '',
         invoicePayerName: '',
         invoiceRatePayerId: '',
         invoicePayerAddrTell: '',
@@ -286,6 +288,10 @@ export default {
     identifyInvoiceInfo() {
       console.log('点击识别发票信息')
       this.$refs.upload.submit()
+      this.fullscreenLoading = true
+      setTimeout(() => {
+        this.fullscreenLoading = false
+      }, 2000)
     },
     save2audit() {
       this.$confirm('是否确认提交发票信息?', '提示', {

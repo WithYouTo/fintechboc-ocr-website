@@ -47,6 +47,7 @@
           size="medium"
           icon="el-icon-download"
           @click="identifyTrainInfo"
+          v-loading.fullscreen.lock="fullscreenLoading"
         >
           识别发票信息
         </el-button>
@@ -173,7 +174,10 @@ export default {
       active: 0,
       borrowerStatus: null,
       submitBtnDisabled: false,
+      fullscreenLoading: false,
       trainForm: {
+        trainId: '',
+        invoiceId: '',
         ticketNo: '',
         ticketCheck: '',
         stationFrom: '',
@@ -220,6 +224,10 @@ export default {
     identifyTrainInfo() {
       console.log('点击识别发票信息')
       this.$refs.upload.submit()
+      this.fullscreenLoading = true
+      setTimeout(() => {
+        this.fullscreenLoading = false
+      }, 2000)
     },
     save2audit() {
       this.$confirm('是否确认提交发票信息?', '提示', {
