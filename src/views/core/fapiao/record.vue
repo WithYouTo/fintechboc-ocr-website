@@ -85,7 +85,7 @@
 </template>
 
 <script>
-import { getList } from '@/api/table'
+import { getMyApplyList } from '@/api/table'
 import { recordDelete } from '@/api/table'
 
 export default {
@@ -117,7 +117,7 @@ export default {
   methods: {
     async fetchData() {
       this.listLoading = true
-      let response = await getList(this.pageParams)
+      let response = await getMyApplyList(this.pageParams)
       if (response.code === 200) {
         console.log('response', response)
         this.list = response.data.records
