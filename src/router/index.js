@@ -42,7 +42,7 @@ export const constantRoutes = [
     component: () => import('@/views/404'),
     hidden: true,
   },
-
+  // 首页 
   {
     path: '/',
     component: Layout,
@@ -56,6 +56,7 @@ export const constantRoutes = [
       },
     ],
   },
+  // 发表报销一级菜单
   {
     // 父路由
     path: '/core/fapiao',
@@ -67,6 +68,7 @@ export const constantRoutes = [
     // 默认值false，当父节点只有一个子节点时，不显示父节点
     // true，任何时候都显示父节点
     alwaysShow: true,
+    // 子菜单
     children: [
       {
         // 子路由，父路由加上子路由即为一个真正的路由
@@ -140,94 +142,59 @@ export const constantRoutes = [
       },
     ],
   },
-
+  // 发票审核一级菜单
   {
-    // 父路由
     path: '/core/review',
     component: Layout,
-    // 如果直接访问父路由，则会跳转到其下的list子路由
     redirect: '/core/review/review',
     name: 'coreIntegralGrade',
     meta: { title: '发票审核', icon: 'el-icon-s-marketing' },
+    alwaysShow: true,
+    // 子路由
+    children: [
+      {
+        path: 'list',
+        name: 'reviewList',
+        component: () => import('@/views/core/review/review'),
+        meta: { title: '待审核列表' },
+      },
+      {
+        path: 'form',
+        name: 'reviewForm',
+        component: () => import('@/views/core/review/form'),
+        meta: { title: '已审核记录' },
+      },
+    ],
+  },
+  // 审核页面 一级菜单（默认情况下隐藏）
+  {
+    // 父路由
+    path: '/core/reviewDetail',
+    component: Layout,
+    redirect: '/core/reviewDetail/vatReview',
+    name: 'reviewDetail',
+    meta: { title: '审核界面', icon: 'el-icon-s-marketing' },
     // 默认值false，当父节点只有一个子节点时，不显示父节点
     // true，任何时候都显示父节点
-    alwaysShow: true,
+    hidden:true,
     children: [
       {
-        // 子路由，父路由加上子路由即为一个真正的路由
-        path: 'list',
-        // 每个路由节点的name不能相同
-        name: 'reviewList',
-        // 执行template模板组件
-        component: () => import('@/views/core/review/review'),
-        // 定义导航标题
-        meta: { title: '审核列表' },
+        path: 'vatReview/:id',
+        name: 'vatReview',
+        component: () => import('@/views/core/reviewDetail/vatReview'),
+        meta: { title: '增值税发票审核' },
       },
       {
-        path: 'create',
-        name: 'viewCreate',
-        component: () => import('@/views/core/review/form'),
-        meta: { title: '审核表单' },
-      },
-      // {
-      //   // :id 是一个占位符，表示这部分url会是任何一个id
-      //   path: 'edit/:id',
-      //   name: 'coreIntegralGradeEdit',
-      //   component: () => import('@/views/core/review/form'),
-      //   meta: { title: '编辑积分等级' },
-      //   hidden: true, //隐藏
-      // },
-    ],
-  },
-
-  {
-    path: '/core',
-    component: Layout,
-    redirect: '/core/dict/list',
-    name: 'coreDict',
-    meta: { title: '系统设置', icon: 'el-icon-setting' },
-    alwaysShow: true,
-    children: [
-      {
-        path: 'dict/list',
-        name: '数据字典',
-        component: () => import('@/views/core/dict/list'),
-        meta: { title: '数据字典' },
-      },
-    ],
-  },
-
-  {
-    path: '/example',
-    component: Layout,
-    redirect: '/example/table',
-    name: 'Example',
-    meta: { title: '例子', icon: 'el-icon-s-help' },
-    children: [
-      {
-        path: 'table',
-        name: 'Table',
-        component: () => import('@/views/table/index'),
-        meta: { title: '表格', icon: 'table' },
+        path: 'taxiReview/:id',
+        name: 'taxiReview',
+        component: () => import('@/views/core/reviewDetail/taxiReview'),
+        meta: { title: 'taxi审核' },
       },
       {
-        path: 'tree',
-        name: 'Tree',
-        component: () => import('@/views/tree/index'),
-        meta: { title: '树', icon: 'tree' },
-      },
-    ],
-  },
-
-  {
-    path: '/form',
-    component: Layout,
-    children: [
-      {
-        path: 'index',
-        name: 'Form',
-        component: () => import('@/views/form/index'),
-        meta: { title: '表单', icon: 'form' },
+        path: 'trainReview/:id',
+        name: 'trainReview',
+        component: () => import('@/views/core/reviewDetail/trainReview'),
+        meta: { title: 'train审核' },
       },
     ],
   },
@@ -321,6 +288,10 @@ const createRouter = () =>
   })
 
 const router = createRouter()
+
+// router.beforeEach((to, from, next) => {
+//   if to.meta.
+// } )
 
 // Detail see: https://github.com/vuejs/vue-router/issues/1234#issuecomment-357941465
 export function resetRouter() {
