@@ -4,7 +4,7 @@
       <div style="margin-bottom: 10px">
         <p>待审核增值税发票:</p>
       </div>
-      <el-image style="width: 400px; height: 400px;" :src="invoiceForm.invoiceImg"></el-image>
+      <el-image style="width: 400px; height: 400px;" :src="invoice.netImgPath"></el-image>
       <!-- <el-dialog :visible.sync="dialogVisible">
         <img width="100%" :src="dialogImageUrl" alt="" />
       </el-dialog>  -->
@@ -184,7 +184,6 @@
         <el-button
           type="success"
           round
-          :disable="submitBtnDisabled"
           @click="permmit"
         >
           同意
@@ -192,7 +191,6 @@
         <el-button
           type="warning"
           round
-          :disable="submitBtnDisabled"
           @click="returnBack"
         >
           退回
@@ -200,7 +198,6 @@
         <el-button
           type="danger"
           round
-          :disable="submitBtnDisabled"
           @click="reject"
         >
           拒绝
@@ -218,6 +215,7 @@ export default {
   // 定义数据
   data() {
     return {
+      invoice:{},
       invoiceForm: {},
       opinion: '',
     }
@@ -231,6 +229,7 @@ export default {
     // 后台获取数据
     fetchDataById() {
       show(this.$route.params.id).then((response) => {
+        this.invoice = response.data.invoice
         this.invoiceForm = response.data.invoiceDetail
       })
    },
