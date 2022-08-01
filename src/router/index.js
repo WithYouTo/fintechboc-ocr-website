@@ -142,10 +142,10 @@ export const constantRoutes = [
       },
     ],
   },
-]
-  // asyncRoutes 动态路由
-  // 发票审核一级菜单
-    export const asyncRoutes = [
+// ]
+//   // asyncRoutes 动态路由
+//   // 发票审核一级菜单
+//     export const asyncRoutes = [
     {
     path: '/core/review',
     component: Layout,
@@ -199,7 +199,7 @@ export const constantRoutes = [
         path: 'taxiReview/:id',
         name: 'taxiReview',
         component: () => import('@/views/core/reviewDetail/taxiReview'),
-        meta: { title: 'taxi审核',
+        meta: { title: '出租车发票审核',
                 // roles: ['admin'] 
               },
       },
@@ -207,7 +207,7 @@ export const constantRoutes = [
         path: 'trainReview/:id',
         name: 'trainReview',
         component: () => import('@/views/core/reviewDetail/trainReview'),
-        meta: { title: 'train审核',
+        meta: { title: '火车票审核',
                 // roles: ['admin'] 
               },
       },
