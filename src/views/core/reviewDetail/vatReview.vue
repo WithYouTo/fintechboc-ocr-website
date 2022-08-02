@@ -1,240 +1,226 @@
 <template>
   <div class="app-container">
-    <div style="width: 400px; position: absolute; left: 100px; top: 120px">
-      <div style="margin-bottom: 10px">
-        <p>待审核增值税发票:</p>
-      </div>
-      <el-image style="width: 400px; height: 400px;" :src="invoiceForm.invoiceImg"></el-image>
-      <!-- <el-dialog :visible.sync="dialogVisible">
-        <img width="100%" :src="dialogImageUrl" alt="" />
-      </el-dialog>  -->
-    </div> 
-    <div
-      style="
-        width: 550px;
-        height: 1460px;
-        position: relative;
-        left: 560px;
-        top: 55px;
-        "
-    >
-      <el-form label-width="150px" ref="invoiceFormRef" :model="invoiceForm">
-        <el-form-item label="购货方名称">
-          <el-input
-            class="input"
-            :disabled="true"
-            v-model="invoiceForm.invoicePayerName"
-            :placeholder="invoiceForm.invoicePayerName"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="购货方纳税人识别号">
-          <el-input
-            v-model="invoiceForm.invoiceRatePayerId"
-            class="input"
-            :disabled="true"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="购货方地址和电话">
-          <el-input
-            v-model="invoiceForm.invoicePayerAddrTell"
-            class="input"
-            :disabled="true"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="购货方开户行及账号">
-          <el-input
-            v-model="invoiceForm.invoicePayerBankAccount"
-            class="input"
-            :disabled="true"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="密码区">
-          <el-input
-            v-model="invoiceForm.cryptographicArea"
-            class="input"
-            :disabled="true"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="发票代码">
-          <el-input
-            v-model="invoiceForm.invoiceDaima"
-            class="input"
-            :disabled="true"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="发票号码">
-          <el-input
-            v-model="invoiceForm.invoiceHaoma"
-            class="input"
-            :disabled="true"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="开票日期">
-          <el-input
-            v-model="invoiceForm.invoiceIssueDate"
-            class="input"
-            :disabled="true"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="货物或服务名称">
-          <el-input
-            v-model="invoiceForm.invoiceGoodsList"
-            class="input"
-            :disabled="true"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="单价">
-          <el-input
-            v-model="invoiceForm.unitPrice"
-            class="input"
-            :disabled="true"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="金额">
-          <el-input
-            v-model="invoiceForm.invoicePriceList"
-            class="input"
-            :disabled="true"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="税率">
-          <el-input
-            v-model="invoiceForm.invoiceTaxRateList"
-            class="input"
-            :disabled="true"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="税额">
-          <el-input
-            v-model="invoiceForm.invoiceTaxList"
-            class="input"
-            :disabled="true"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="合计金额">
-          <el-input
-            v-model="invoiceForm.invoiceTotal"
-            class="input"
-            :disabled="true"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="合计税率">
-          <el-input
-            v-model="invoiceForm.invoiceTaxTotal"
-            class="input"
-            :disabled="true"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="价税合计大写总额">
-          <el-input
-            v-model="invoiceForm.invoiceTotalCoverTax"
-            class="input"
-            :disabled="true"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="价税合计小写总额">
-          <el-input
-            v-model="invoiceForm.invoiceTotalCoverTaxDigits"
-            class="input"
-            :disabled="true"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="销售方名称">
-          <el-input
-            v-model="invoiceForm.invoiceSellerName"
-            class="input"
-            :disabled="true"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="销售方纳税人识别号">
-          <el-input
-            v-model="invoiceForm.invoiceSellerId"
-            class="input"
-            :disabled="true"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="销售方地址和电话">
-          <el-input
-            v-model="invoiceForm.invoiceSellerAddrTell"
-            class="input"
-            :disabled="true"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="销售方开户行及账号">
-          <el-input
-            v-model="invoiceForm.invoiceSellerBankAccount"
-            class="input"
-            :disabled="true"
-          ></el-input>
-        </el-form-item>
-        <el-form-item label="备注">
-          <el-input
-            v-model="invoiceForm.note"
-            class="input"
-            :disabled="true"
-          ></el-input>
-        </el-form-item>
-      </el-form>
-    </div>
-    <div 
-      style="margin-bottom: 40px; 
-      text-align: center;
-      position: relative;"
-    >
-        <el-button
-          type="success"
-          round
-          :disable="submitBtnDisabled"
-          @click="permmit"
-        >
-          同意
-        </el-button>
-        <el-button
-          type="warning"
-          round
-          :disable="submitBtnDisabled"
-          @click="returnBack"
-        >
-          退回
-        </el-button>
-        <el-button
-          type="danger"
-          round
-          :disable="submitBtnDisabled"
-          @click="reject"
-        >
-          拒绝
-        </el-button>
-      </div>
+    <el-form label-width="200px" class="form-table">
+      <el-row>
+        <el-col :span="11">
+          <el-form-item label="购货方名称">
+            {{ invoiceForm.invoicePayerName }}
+          </el-form-item>
+        </el-col>
+        <el-col :span="11">
+          <el-form-item label="购货方纳税人识别号">
+            {{ invoiceForm.invoiceRatePayerId }}
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="11">
+          <el-form-item label="购货方地址和电话">
+            {{ invoiceForm.invoicePayerAddrTell }}
+          </el-form-item>
+        </el-col>
 
+        <el-col :span="11">
+          <el-form-item label="购货方开户行及账号">
+            {{ invoiceForm.invoicePayerBankAccount }}
+          </el-form-item>
+        </el-col>
+        <!-- <el-col :span="8">
+          <el-form-item label="密码区">
+            {{ invoiceForm.cryptographicArea }}
+          </el-form-item>
+        </el-col> -->
+      </el-row>
+      <el-row>
+        <el-col :span="11">
+          <el-form-item label="发票代码">
+            {{ invoiceForm.invoiceDaima }}
+          </el-form-item>
+        </el-col>
+        <el-col :span="11">
+          <el-form-item label="发票号码">
+            {{ invoiceForm.invoiceHaoma }}
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="11">
+          <el-form-item label="开票日期">
+            {{ invoiceForm.invoiceIssueDate }}
+          </el-form-item>
+        </el-col>
+        <el-col :span="11">
+          <el-form-item label="货物或服务名称">
+            {{ invoiceForm.invoiceGoodsList }}
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="11">
+          <el-form-item label="单价">
+            {{ invoiceForm.unitPrice }}
+          </el-form-item>
+        </el-col>
+
+        <el-col :span="11">
+          <el-form-item label="金额">
+            {{ invoiceForm.invoicePriceList }}
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="11">
+          <el-form-item label="税率">
+            {{ invoiceForm.invoiceTaxRateList }}
+          </el-form-item>
+        </el-col>
+        <el-col :span="11">
+          <el-form-item label="税额">
+            {{ invoiceForm.invoiceTaxList }}
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="11">
+          <el-form-item label="合计金额">
+            {{ invoiceForm.invoiceTotal }}
+          </el-form-item>
+        </el-col>
+        <el-col :span="11">
+          <el-form-item label="合计税率">
+            {{ invoiceForm.invoiceTaxTotal }}
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="11">
+          <el-form-item label="价税合计大写总额">
+            {{ invoiceForm.invoiceTotalCoverTax }}
+          </el-form-item>
+        </el-col>
+        <el-col :span="11">
+          <el-form-item label="价税合计小写总额">
+            {{ invoiceForm.invoiceTotalCoverTaxDigits }}
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="11">
+          <el-form-item label="销售方名称">
+            {{ invoiceForm.invoiceSellerName }}
+          </el-form-item>
+        </el-col>
+        <el-col :span="11">
+          <el-form-item label="销售方纳税人识别号">
+            {{ invoiceForm.invoiceSellerId }}
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="11">
+          <el-form-item label="销售方地址和电话">
+            {{ invoiceForm.invoiceSellerAddrTell }}
+          </el-form-item>
+        </el-col>
+        <el-col :span="11">
+          <el-form-item label="销售方开户行及账号">
+            {{ invoiceForm.invoiceSellerBankAccount }}
+          </el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col :span="11">
+          <el-form-item label="备注">
+            {{ invoiceForm.note }}
+          </el-form-item>
+        </el-col>
+        <el-col :span="11">
+          <el-form-item label="审核回复"></el-form-item>
+        </el-col>
+      </el-row>
+      <el-row>
+        <el-col>
+          <p style="margin-left: 200px">审核时上传图片，点击放大预览</p>
+            <el-image
+              :src="invoice.netImgPath"
+              :preview-src-list="[invoice.netImgPath]"
+              style="width: 300px;
+                    height:300px;
+                    margin-left: 200px;
+                    display: block;
+                    border-radius: 5px;
+                    border: 1px solid #ccc;
+                    box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+                    ">
+            </el-image>
+        </el-col>
+      </el-row>
+      <!-- <el-row style="text-align: center; margin-top: 10px;">
+        <el-button @click="back">返回</el-button>
+      </el-row> -->
+      <el-row style="margin-top: 20px;">
+        <div 
+        style="margin-bottom: 40px; 
+        text-align: center;
+        position: relative;"
+      >
+          <el-button
+            type="success"
+            round
+            @click="permmit"
+          >
+            同意
+          </el-button>
+          <el-button
+            type="warning"
+            round
+            @click="returnBack"
+          >
+            退回
+          </el-button>
+          <el-button
+            type="danger"
+            round
+            @click="reject"
+          >
+            拒绝
+          </el-button>
+        </div>
+      </el-row>
+    </el-form>
   </div>
 </template>
-
 <script>
+// 引入组件
 import { show } from '@/api/table'
 import request from '@/utils/request'
-
 export default {
-  // 定义数据
   data() {
     return {
+      invoice: {},
       invoiceForm: {},
       opinion: '',
     }
   },
-  //  页面渲染成功后获取数据 调用下面方法里的fetchData 从后台获取数据
-   created(){
-    this.fetchDataById();
-   },
 
+  created() {
+    if (this.$route.params.id) {
+      this.fetchDataById();
+    }
+  },
   methods: {
-    // 后台获取数据
+    // 根据id查询记录
     fetchDataById() {
       show(this.$route.params.id).then((response) => {
+        this.invoice = response.data.invoice
         this.invoiceForm = response.data.invoiceDetail
       })
-   },
-    //同意按钮
+    },
+
+    back() {
+      this.$router.push({ path: '/core/fapiao/record' })
+    },
+
     permmit(){
       this.$confirm('确定同意吗？', '提示', {
         confirmButtonText: '确定',
@@ -270,17 +256,12 @@ export default {
         })
       })
     },
-
     // 退回按钮
     returnBack(){
       this.$prompt('请输入退回建议','提示',{
         confirmButtonText: '确定',
         cancelButtonText: '取消',
       })
-      // this.$confirm('确定退回吗？', '提示', {
-      //   confirmButtonText: '确定',
-      //   cancelButtonText: '取消',
-      //   type: 'warning'
        .then(({value}) => {
         this.opinion = value;
         this.status = '2';
@@ -313,7 +294,6 @@ export default {
         })
       })
     },
-
     // 拒绝按钮
     reject(){
       this.$confirm('确定拒绝吗？', '提示', {
@@ -341,18 +321,25 @@ export default {
             .then((res) => {
               this.$router.push('/core/review/list')
         })
+      }).catch(() => {
+        this.$message({
+        type: 'info',
+        message: '已取消'
+        })
       })
     }
-  }
+  },
 }
 </script>
 
 <style lang="scss" scoped>
-::v-deep .input .el-input__inner {
-    width:100%;
+::v-deep .el-form .el-form-item__content {
     background-color: #e8e8e8;
     text-align: center;
-    border-color: #c0c4cc;
+    // border-color: #c0c4cc;
     color:#000
+    border-box;
+    border-radius: 5px;
+    border: 1px solid #c0c4cc;
 }
 </style>
