@@ -214,6 +214,45 @@ export const constantRoutes = [
     ],
   },
 
+  // 已审核查看页面 一级菜单（默认情况下隐藏）
+  {
+    // 父路由
+    path: '/core/myReview',
+    component: Layout,
+    redirect: '/core/myReview/vatReview',
+    name: 'myReview',
+    meta: { title: '已审核', icon: 'el-icon-s-marketing' },
+    // 默认值false，当父节点只有一个子节点时，不显示父节点
+    // true，任何时候都显示父节点
+    hidden:true,
+    children: [
+      {
+        path: 'myVatReview/:id',
+        name: 'vatReview',
+        component: () => import('@/views/core/myReview/vatReview'),
+        meta: { title: '增值税发票审核',
+                // roles: ['admin']
+              },
+      },
+      {
+        path: 'myTaxiReview/:id',
+        name: 'taxiReview',
+        component: () => import('@/views/core/myReview/taxiReview'),
+        meta: { title: '出租车发票审核',
+                // roles: ['admin'] 
+              },
+      },
+      {
+        path: 'myTrainReview/:id',
+        name: 'trainReview',
+        component: () => import('@/views/core/myReview/trainReview'),
+        meta: { title: '火车票审核',
+                // roles: ['admin'] 
+              },
+      },
+    ],
+  },
+
   { path: '*', redirect: '/404', hidden: true },
 ]
 
