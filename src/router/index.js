@@ -142,13 +142,18 @@ export const constantRoutes = [
       },
     ],
   },
-  // 发票审核一级菜单
-  {
+// ]
+//   // asyncRoutes 动态路由
+//   // 发票审核一级菜单
+//     export const asyncRoutes = [
+    {
     path: '/core/review',
     component: Layout,
     redirect: '/core/review/review',
     name: 'coreIntegralGrade',
-    meta: { title: '发票审核', icon: 'el-icon-s-marketing' },
+    meta: { title: '发票审核', icon: 'el-icon-s-marketing', 
+            // roles: ['admin'] 
+          },
     alwaysShow: true,
     // 子路由
     children: [
@@ -156,18 +161,22 @@ export const constantRoutes = [
         path: 'list',
         name: 'reviewList',
         component: () => import('@/views/core/review/review'),
-        meta: { title: '待审核列表' },
+        meta: { title: '待审核列表', 
+                // roles: ['admin']
+              },
       },
       {
         path: 'form',
         name: 'reviewForm',
         component: () => import('@/views/core/review/form'),
-        meta: { title: '已审核记录' },
+        meta: { title: '已审核记录', 
+                // roles: ['admin']
+              },
       },
     ],
   },
-  // 审核页面 一级菜单（默认情况下隐藏）
-  {
+    // 审核页面 一级菜单（默认情况下隐藏）
+    {
     // 父路由
     path: '/core/reviewDetail',
     component: Layout,
@@ -182,103 +191,111 @@ export const constantRoutes = [
         path: 'vatReview/:id',
         name: 'vatReview',
         component: () => import('@/views/core/reviewDetail/vatReview'),
-        meta: { title: '增值税发票审核' },
+        meta: { title: '增值税发票审核',
+                // roles: ['admin']
+              },
       },
       {
         path: 'taxiReview/:id',
         name: 'taxiReview',
         component: () => import('@/views/core/reviewDetail/taxiReview'),
-        meta: { title: 'taxi审核' },
+        meta: { title: '出租车发票审核',
+                // roles: ['admin'] 
+              },
       },
       {
         path: 'trainReview/:id',
         name: 'trainReview',
         component: () => import('@/views/core/reviewDetail/trainReview'),
-        meta: { title: 'train审核' },
+        meta: { title: '火车票审核',
+                // roles: ['admin'] 
+              },
       },
     ],
   },
+
+  { path: '*', redirect: '/404', hidden: true },
 ]
 
 /**
  * asyncRoutes
  * the routes that need to be dynamically loaded based on user roles
  */
-export const asyncRoutes = [
-  {
-    path: '/nested',
-    component: Layout,
-    redirect: '/nested/menu1',
-    name: 'Nested',
-    meta: {
-      title: 'Nested',
-      icon: 'nested',
-    },
-    children: [
-      {
-        path: 'menu1',
-        component: () => import('@/views/nested/menu1/index'), // Parent router-view
-        name: 'Menu1',
-        meta: { title: 'Menu1' },
-        children: [
-          {
-            path: 'menu1-1',
-            component: () => import('@/views/nested/menu1/menu1-1'),
-            name: 'Menu1-1',
-            meta: { title: 'Menu1-1' },
-          },
-          {
-            path: 'menu1-2',
-            component: () => import('@/views/nested/menu1/menu1-2'),
-            name: 'Menu1-2',
-            meta: { title: 'Menu1-2' },
-            children: [
-              {
-                path: 'menu1-2-1',
-                component: () =>
-                  import('@/views/nested/menu1/menu1-2/menu1-2-1'),
-                name: 'Menu1-2-1',
-                meta: { title: 'Menu1-2-1' },
-              },
-              {
-                path: 'menu1-2-2',
-                component: () =>
-                  import('@/views/nested/menu1/menu1-2/menu1-2-2'),
-                name: 'Menu1-2-2',
-                meta: { title: 'Menu1-2-2' },
-              },
-            ],
-          },
-          {
-            path: 'menu1-3',
-            component: () => import('@/views/nested/menu1/menu1-3'),
-            name: 'Menu1-3',
-            meta: { title: 'Menu1-3' },
-          },
-        ],
-      },
-      {
-        path: 'menu2',
-        component: () => import('@/views/nested/menu2/index'),
-        meta: { title: 'menu2' },
-      },
-    ],
-  },
+//export const asyncRoutes = [
+  // {
+  //   path: '/nested',
+  //   component: Layout,
+  //   redirect: '/nested/menu1',
+  //   name: 'Nested',
+  //   meta: {
+  //     title: 'Nested',
+  //     icon: 'nested',
+  //   },
+  //   children: [
+  //     {
+  //       path: 'menu1',
+  //       component: () => import('@/views/nested/menu1/index'), // Parent router-view
+  //       name: 'Menu1',
+  //       meta: { title: 'Menu1' },
+  //       children: [
+  //         {
+  //           path: 'menu1-1',
+  //           component: () => import('@/views/nested/menu1/menu1-1'),
+  //           name: 'Menu1-1',
+  //           meta: { title: 'Menu1-1' },
+  //         },
+  //         {
+  //           path: 'menu1-2',
+  //           component: () => import('@/views/nested/menu1/menu1-2'),
+  //           name: 'Menu1-2',
+  //           meta: { title: 'Menu1-2' },
+  //           children: [
+  //             {
+  //               path: 'menu1-2-1',
+  //               component: () =>
+  //                 import('@/views/nested/menu1/menu1-2/menu1-2-1'),
+  //               name: 'Menu1-2-1',
+  //               meta: { title: 'Menu1-2-1' },
+  //             },
+  //             {
+  //               path: 'menu1-2-2',
+  //               component: () =>
+  //                 import('@/views/nested/menu1/menu1-2/menu1-2-2'),
+  //               name: 'Menu1-2-2',
+  //               meta: { title: 'Menu1-2-2' },
+  //             },
+  //           ],
+  //         },
+  //         {
+  //           path: 'menu1-3',
+  //           component: () => import('@/views/nested/menu1/menu1-3'),
+  //           name: 'Menu1-3',
+  //           meta: { title: 'Menu1-3' },
+  //         },
+  //       ],
+  //     },
+  //     {
+  //       path: 'menu2',
+  //       component: () => import('@/views/nested/menu2/index'),
+  //       meta: { title: 'menu2' },
+  //     },
+  //   ],
+  // },
 
-  {
-    path: 'external-link',
-    component: Layout,
-    children: [
-      {
-        path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
-        meta: { title: 'External Link', icon: 'link' },
-      },
-    ],
-  },
+//   {
+//     path: 'external-link',
+//     component: Layout,
+//     children: [
+//       {
+//         path: 'https://panjiachen.github.io/vue-element-admin-site/#/',
+//         meta: { title: 'External Link', icon: 'link' },
+//       },
+//     ],
+//   },
 
-  // 404 page must be placed at the end !!!
-  { path: '*', redirect: '/404', hidden: true },
-]
+//   // 404 page must be placed at the end !!!
+  
+// ]
 
 const createRouter = () =>
   new Router({
