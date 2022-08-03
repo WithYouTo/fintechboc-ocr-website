@@ -89,10 +89,20 @@
         </el-col>
       </el-row>
       <el-row>
-        <el-col :span="22">
-          <el-form-item label="发票图片">
-            <img :src="train.netImgPath" style="width: 580px" />
-          </el-form-item>
+        <el-col style="margin-left: 200px">
+          <p>发票图片，点击放大预览</p>
+          <el-image
+            :src="train.netImgPath"
+            :preview-src-list="[train.netImgPath]"
+            style="
+              width: 300px;
+              height: 300px;
+              display: block;
+              border-radius: 5px;
+              border: 1px solid #ccc;
+              box-shadow: 0 0 10px rgba(0, 0, 0, 0.2);
+            "
+          ></el-image>
         </el-col>
       </el-row>
       <el-row style="text-align: center">
@@ -167,3 +177,13 @@ export default {
   },
 }
 </script>
+<style lang="scss" scoped>
+::v-deep .el-form .el-form-item__content {
+  background-color: #e8e8e8;
+  text-align: center;
+  // border-color: #c0c4cc;
+  color: #000 border-box;
+  border-radius: 5px;
+  border: 1px solid #c0c4cc;
+}
+</style>
