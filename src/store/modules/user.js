@@ -1,12 +1,16 @@
 import { login, logout, getInfo } from "@/api/user";
 import { getToken, setToken, removeToken } from "@/utils/auth";
-import { resetRouter } from "@/router";
+import router, { resetRouter, anyRoutes, constantRoutes, asyncApplyRoutes, asyncAuditRoutes } from "@/router";
 
 const getDefaultState = () => {
   return {
     token: getToken(),
     name: "",
     avatar: "",
+    // 根据角色计算路由信息
+    conditionsRouters: [],
+    // 最终返回路由信息
+    resultAllRouters: []
   };
 };
 
@@ -24,6 +28,13 @@ const mutations = {
   },
   SET_AVATAR: (state, avatar) => {
     state.avatar = avatar;
+  },
+  SET_RESULT_ASYNCROUTERS:(state, asyncRouters) => {
+    // vuex根据角色保存异步路由
+    state.conditionsRouters = asyncRouters;
+    // 最终结果：常量路由 + 异步路由 + any路由
+    state.resultAllRouters = constantRoutes.concat(state.conditionsRouters,anyRoutes)
+    router.addRoutes(state.resultAllRouters)
   },
 };
 
@@ -51,6 +62,16 @@ const actions = {
         "SET_AVATAR",
         "https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif"
       );
+
+      // 根据角色判断，条件路由中的值
+      const role = result.data.role
+      if(role === 'Reimburser_Auditor'){
+        commit('SET_RESULT_ASYNCROUTERS', [...asyncApplyRoutes, ...asyncAuditRoutes])
+      }else if(role === 'Reimburser'){
+        commit('SET_RESULT_ASYNCROUTERS', asyncApplyRoutes)
+      }else if(role === 'Auditor'){
+        commit('SET_RESULT_ASYNCROUTERS', asyncAuditRoutes)
+      }
       return "ok";
     } else {
       return Promise(new Error("验证失败，请重新登录"));
