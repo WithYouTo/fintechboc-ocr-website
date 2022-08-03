@@ -36,13 +36,12 @@
       <el-table-column label="操作" width="200px">
         <template slot-scope="scope">
           <el-button
-            v-if="scope.row.status===0"
             type="primary"
             icon="el-icon-edit"
             size="mini"
             @click="jumpToReviewDetail(scope.row)"
           >
-            审核
+            查看
           </el-button>
         </template>
       </el-table-column>
@@ -122,13 +121,13 @@ export default {
     },
     jumpToReviewDetail(rowInfo){
         if(rowInfo.invoiceType==="train"){
-         this.$router.push('/core/reviewDetail/trainReview/' + rowInfo.id)
+         this.$router.push('/core/myReview/myTrainReview/' + rowInfo.id)
         }
         else if(rowInfo.invoiceType==="taxi"){
-         this.$router.push('/core/reviewDetail/taxiReview/' + rowInfo.id)
+         this.$router.push('/core/myReview/myTaxiReview/' + rowInfo.id)
         }
         else if(rowInfo.invoiceType==="invoice"){
-         this.$router.push('/core/reviewDetail/vatReview/' + rowInfo.id)
+         this.$router.push('/core/myReview/myVatReview/' + rowInfo.id)
         }
       }
   },
